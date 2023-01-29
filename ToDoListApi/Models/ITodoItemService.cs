@@ -24,9 +24,9 @@ public class TodoItemService : ITodoItemService
         _pathToFile = "tasks.json";
         _tasks = new List<TodoItem>
         {
-            new TodoItem { taskId = 1, taskDescription = "Teambuilding at 9 o'clock.", isComplete = false },
-            new TodoItem { taskId = 2, taskDescription = "Send an e-mail to Anatoliy Rostislavovich.", isComplete = false },
-            new TodoItem { taskId = 3, taskDescription = "Call to Sofiya and speaking about workshop at 10 o'clock.", isComplete = false }
+            new TodoItem { taskId = 1, taskDescription = "Teambuilding at 9 o'clock.", IsComplete = false },
+            new TodoItem { taskId = 2, taskDescription = "Send an e-mail to Anatoliy Rostislavovich.", IsComplete = false },
+            new TodoItem { taskId = 3, taskDescription = "Call to Sofiya and speaking about workshop at 10 o'clock.", IsComplete = false }
         };
     }
 
@@ -63,7 +63,7 @@ public class TodoItemService : ITodoItemService
         {
             existingCase.taskId = newCase.taskId;
             existingCase.taskDescription = newCase.taskDescription;
-            existingCase.isComplete = newCase.isComplete;
+            existingCase.IsComplete = newCase.IsComplete;
             SaveToFile();
         }
     }
@@ -81,9 +81,9 @@ public class TodoItemService : ITodoItemService
     {
         _tasks = new List<TodoItem>()
         {
-            new TodoItem { taskId = 1, taskDescription = "Teambuilding at 9 o'clock.", isComplete = false },
-            new TodoItem { taskId = 2, taskDescription = "Send an e-mail to Anatoliy Rostislavovich.", isComplete = false },
-            new TodoItem { taskId = 3, taskDescription = "Call to Sofiya and speaking about workshop at 10 o'clock.", isComplete = false }
+            new TodoItem { taskId = 1, taskDescription = "Teambuilding at 9 o'clock.", IsComplete = false },
+            new TodoItem { taskId = 2, taskDescription = "Send an e-mail to Anatoliy Rostislavovich.", IsComplete = false },
+            new TodoItem { taskId = 3, taskDescription = "Call to Sofiya and speaking about workshop at 10 o'clock.", IsComplete = false }
         };
 
         if (!File.Exists(_pathToFile))
