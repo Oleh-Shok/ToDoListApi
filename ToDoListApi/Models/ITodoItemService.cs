@@ -91,14 +91,12 @@ public class TodoItemService : ITodoItemService
 
         };
 
-        using (var reader = new StreamReader(_pathToFile))
+        using var reader = new StreamReader(_pathToFile);
+        var json = reader.ReadToEnd();
+        if (string.IsNullOrEmpty(json))
         {
-            var json = reader.ReadToEnd();
-            if (string.IsNullOrEmpty(json))
-            {
-                return _tasks;                
-            }
-            return JsonSerializer.Deserialize<List<TodoItem>>(json) ?? new List<TodoItem>();
+            return _tasks;
         }
+        return JsonSerializer.Deserialize<List<TodoItem>>(json) ?? new List<TodoItem>();
     }
 }
