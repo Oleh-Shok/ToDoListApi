@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
-using System.Reflection;
 using ToDoListApi.Models;
 using ToDoListApi.Services;
 
@@ -13,6 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ITodoItemService, TodoItemService>();
+builder.Services.AddTransient<IValidator<TodoItem>, TaskValidator>();
+builder.Services.AddTransient<IValidator<int>, IdValidator>();
 builder.Services.AddFluentValidationAutoValidation();
 
 var app = builder.Build();
