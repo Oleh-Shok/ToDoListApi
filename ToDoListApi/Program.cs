@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using System.Reflection;
-using ToDoListApi.Controllers;
 using ToDoListApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
