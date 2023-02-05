@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ToDoListApi.Models;
-using Microsoft.Extensions.Caching.Memory;
 using FluentValidation;
 
 namespace ToDoListApi.Controllers;

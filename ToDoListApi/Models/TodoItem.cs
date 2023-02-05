@@ -1,6 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ToDoListApi.Models;
 

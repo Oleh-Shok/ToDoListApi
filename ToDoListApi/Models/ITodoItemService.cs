@@ -1,6 +1,4 @@
 ﻿using System.Text.Json;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace ToDoListApi.Models;
 
