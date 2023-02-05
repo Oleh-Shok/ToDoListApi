@@ -70,11 +70,9 @@ public class TodoItemService : ITodoItemService
 
     private void SaveToFile()
     {
-        using (var writerTask = new StreamWriter(_pathToFile))
-        {
-            var json = JsonSerializer.Serialize(_tasks);
-            writerTask.Write(json);
-        }
+        using var writerTask = new StreamWriter(_pathToFile);
+        var json = JsonSerializer.Serialize(_tasks);
+        writerTask.Write(json);
     }
 
     private List<TodoItem> ReadFromFile()
