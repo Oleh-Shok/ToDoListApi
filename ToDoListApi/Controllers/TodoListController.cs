@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ToDoListApi.Services;
 using ToDoListApi.Models;
-using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ToDoListApi.Controllers;
 
@@ -10,24 +10,20 @@ namespace ToDoListApi.Controllers;
 public class TodoListController : ControllerBase
 {
 
-    private readonly ITodoItemService _todoItemService;
-    private readonly IValidator<TodoItem> _taskValidator;
-    private readonly IValidator<int> _taskIdValidator;
+    private readonly ITodoItemService _todoItemService;    
 
-    public TodoListController(ITodoItemService todoItemService, IValidator<TodoItem> taskValidator, IValidator<int> taskIdValidator)
+    public TodoListController(ITodoItemService todoItemService)
     {
         _todoItemService = todoItemService;
-        _taskValidator = taskValidator;
-        _taskIdValidator = taskIdValidator;
     }
 
+    [Authorize]
     [HttpPost]
     public ActionResult<TodoItem> AddTodoItem(TodoItem newTodoItem)
     {
-        var validationResult = _taskValidator.Validate(newTodoItem);
-        if (!validationResult.IsValid)
+        if (!ModelState.IsValid)
         {
-            return BadRequest(validationResult.Errors);
+            return BadRequest(ModelState.MaxAllowedErrors);
         }
 
         if (_todoItemService.Exist(newTodoItem.TaskId))
@@ -42,11 +38,11 @@ public class TodoListController : ControllerBase
         return Ok(successMessages);
     }
 
+    [Authorize]
     [HttpDelete("{taskId}")]
     public ActionResult<TodoItem> RemoveTodoItem(int taskId)
-    {
-        var validationResult = _taskIdValidator.Validate(taskId);
-        if (!validationResult.IsValid)
+    {       
+        if (!ModelState.IsValid)
         {
             return BadRequest();
         }
@@ -63,6 +59,7 @@ public class TodoListController : ControllerBase
         
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public ActionResult<List<TodoItem>> GetTodoItem()
     {
@@ -74,13 +71,13 @@ public class TodoListController : ControllerBase
         return tasks;
     }
 
+    [Authorize]
     [HttpPut("{taskId}")]
     public ActionResult<TodoItem> UpdateCase(int taskId, TodoItem updatedTask)
-    {
-        var validationResult = _taskValidator.Validate(updatedTask);
-        if (!validationResult.IsValid)
+    {        
+        if (!ModelState.IsValid)
         {
-            return BadRequest(validationResult.Errors);
+            return BadRequest(ModelState.MaxAllowedErrors);
         }
 
         if (!_todoItemService.Exist(taskId))
