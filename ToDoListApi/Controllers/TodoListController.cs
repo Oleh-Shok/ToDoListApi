@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ToDoListApi.Services;
 using ToDoListApi.Models;
 using FluentValidation;
 
@@ -70,7 +71,7 @@ public class TodoListController : ControllerBase
         {
             return NotFound("To Do list is empty now. Please add task.");
         }
-        return Ok(tasks);
+        return tasks;
     }
 
     [HttpPut("{taskId}")]

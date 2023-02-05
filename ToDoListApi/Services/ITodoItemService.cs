@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
+using ToDoListApi.Models;
 
-namespace ToDoListApi.Models;
+namespace ToDoListApi.Services;
 
 public interface ITodoItemService
 {
