@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.AspNetCore;
 using System.Reflection;
 using ToDoListApi.Models;
 using ToDoListApi.Services;
@@ -11,10 +12,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddSingleton<ITodoItemService, TodoItemService>();
-builder.Services.AddTransient<IValidator<TodoItem>, TaskValidator>();
-builder.Services.AddTransient<IValidator<int>, IdValidator>();
+builder.Services.AddFluentValidationAutoValidation();
 
 var app = builder.Build();
 
