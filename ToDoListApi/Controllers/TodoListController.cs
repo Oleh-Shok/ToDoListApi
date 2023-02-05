@@ -32,9 +32,9 @@ public class TodoListController : ControllerBase
             return BadRequest(validationResult.Errors);
         }
 
-        if (_todoItemService.Exist(newTodoItem.taskId))
+        if (_todoItemService.Exist(newTodoItem.TaskId))
         {
-            return Conflict($"Task with id {newTodoItem.taskId} already exists");
+            return Conflict($"Task with id {newTodoItem.TaskId} already exists");
         }
         _todoItemService.AddTodoItem(newTodoItem);
         var successMessages = new List<string>

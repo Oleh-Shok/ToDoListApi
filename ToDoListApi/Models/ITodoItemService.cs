@@ -24,9 +24,9 @@ public class TodoItemService : ITodoItemService
         _pathToFile = "tasks.json";
         _tasks = new List<TodoItem>
         {
-            new TodoItem { taskId = 1, taskDescription = "Teambuilding at 9 o'clock.", IsComplete = false },
-            new TodoItem { taskId = 2, taskDescription = "Send an e-mail to Anatoliy Rostislavovich.", IsComplete = false },
-            new TodoItem { taskId = 3, taskDescription = "Call to Sofiya and speaking about workshop at 10 o'clock.", IsComplete = false }
+            new TodoItem { TaskId = 1, TaskDescription = "Teambuilding at 9 o'clock.", IsComplete = false },
+            new TodoItem { TaskId = 2, TaskDescription = "Send an e-mail to Anatoliy Rostislavovich.", IsComplete = false },
+            new TodoItem { TaskId = 3, TaskDescription = "Call to Sofiya and speaking about workshop at 10 o'clock.", IsComplete = false }
         };
     }
 
@@ -40,7 +40,7 @@ public class TodoItemService : ITodoItemService
     public void RemoveTodoItem(int taskId)
     {
         _tasks = ReadFromFile();
-        _tasks.RemoveAll(x => x.taskId == taskId);
+        _tasks.RemoveAll(x => x.TaskId == taskId);
         SaveToFile();
     }
 
@@ -52,17 +52,17 @@ public class TodoItemService : ITodoItemService
 
     public bool Exist(int taskId)
     {
-        return _tasks.Any(x => x.taskId == taskId);
+        return _tasks.Any(x => x.TaskId == taskId);
     }
 
     public void UpdateCase(int taskId, TodoItem newCase)
     {
         _tasks = ReadFromFile();
-        var existingCase = _tasks.FirstOrDefault(x => x.taskId == taskId);
+        var existingCase = _tasks.FirstOrDefault(x => x.TaskId == taskId);
         if (existingCase != null)
         {
-            existingCase.taskId = newCase.taskId;
-            existingCase.taskDescription = newCase.taskDescription;
+            existingCase.TaskId = newCase.TaskId;
+            existingCase.TaskDescription = newCase.TaskDescription;
             existingCase.IsComplete = newCase.IsComplete;
             SaveToFile();
         }
@@ -79,9 +79,9 @@ public class TodoItemService : ITodoItemService
     {
         _tasks = new List<TodoItem>()
         {
-            new TodoItem { taskId = 1, taskDescription = "Teambuilding at 9 o'clock.", IsComplete = false },
-            new TodoItem { taskId = 2, taskDescription = "Send an e-mail to Anatoliy Rostislavovich.", IsComplete = false },
-            new TodoItem { taskId = 3, taskDescription = "Call to Sofiya and speaking about workshop at 10 o'clock.", IsComplete = false }
+            new TodoItem { TaskId = 1, TaskDescription = "Teambuilding at 9 o'clock.", IsComplete = false },
+            new TodoItem { TaskId = 2, TaskDescription = "Send an e-mail to Anatoliy Rostislavovich.", IsComplete = false },
+            new TodoItem { TaskId = 3, TaskDescription = "Call to Sofiya and speaking about workshop at 10 o'clock.", IsComplete = false }
         };
 
         if (!File.Exists(_pathToFile))
