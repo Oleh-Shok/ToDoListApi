@@ -2,14 +2,14 @@
 using ToDoListApi.Services;
 using ToDoListApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using ToDoListApi.Models.Exceptions;
 
 namespace ToDoListApi.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/toDoList")]
 public class TodoListController : ControllerBase
 {
-
     private readonly ITodoItemService _todoItemService;    
 
     public TodoListController(ITodoItemService todoItemService)
@@ -18,17 +18,12 @@ public class TodoListController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost]
+    [HttpPost("add-task")]
     public ActionResult<TodoItem> AddTodoItem(TodoItem newTodoItem)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState.MaxAllowedErrors);
-        }
-
         if (_todoItemService.Exist(newTodoItem.TaskId))
         {
-            return Conflict($"Task with id {newTodoItem.TaskId} already exists");
+            throw new ValidationException($"Task with id {newTodoItem.TaskId} already exists");
         }
         _todoItemService.AddTodoItem(newTodoItem);
         var successMessages = new List<string>
@@ -39,16 +34,12 @@ public class TodoListController : ControllerBase
     }
 
     [Authorize]
-    [HttpDelete("{taskId}")]
+    [HttpDelete("delete-task")]
     public ActionResult<TodoItem> RemoveTodoItem(int taskId)
-    {       
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
+    {
         if (!_todoItemService.Exist(taskId))
         {
-            return NotFound($"Task with id {taskId} not found");
+            throw new NotFoundException($"Task with id {taskId} not found");
         }
         _todoItemService.RemoveTodoItem(taskId);
         var deleteMessages = new List<string>
@@ -60,29 +51,24 @@ public class TodoListController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpGet]
+    [HttpGet("get-list-of-todoitems")]
     public ActionResult<List<TodoItem>> GetTodoItem()
     {
         var tasks = _todoItemService.GetTodoItem();
         if (tasks.Count == 0)
         {
-            return NotFound("To Do list is empty now. Please add task.");
+            throw new NotFoundException("To Do list is empty now. Please add task.");
         }
         return tasks;
     }
 
     [Authorize]
-    [HttpPut("{taskId}")]
+    [HttpPut("update-task")]
     public ActionResult<TodoItem> UpdateCase(int taskId, TodoItem updatedTask)
-    {        
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState.MaxAllowedErrors);
-        }
-
+    {
         if (!_todoItemService.Exist(taskId))
         {
-            return NotFound($"Task with id {taskId} not found");
+            throw new NotFoundException($"Task with id {taskId} not found");
         }
 
         _todoItemService.UpdateCase(taskId, updatedTask);

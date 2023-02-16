@@ -1,82 +1,35 @@
-﻿using FluentValidation;
-using FluentValidation.AspNetCore;
-using ToDoListApi.Models;
-using ToDoListApi.Services;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.OpenApi.Models;
+﻿using ToDoListApi.Services;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddProblemDetails();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Todo List API", Version = "v1" });
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Please enter a valid token",
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        Scheme = "Bearer"
-    });
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
-                }
-            },
-            new List<string>()
-        }
-    });
-});
+builder.Services.AddSwaggerGen("v1", "Todo List API");
+builder.Services.AddProblemDetails();
 builder.Services.AddSingleton<ITodoItemService, TodoItemService>();
-builder.Services.AddTransient<IValidator<TodoItem>, TaskValidator>();
-//builder.Services.AddTransient<IValidator<int>>();
-builder.Services.AddFluentValidationAutoValidation();
-
-builder.Services.AddAuthentication()
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = false,
-            ValidIssuer = "localhost",
-            ValidAudience = "localhost",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-secret-key-that-must-be-at-least-16-characters-long"))
-        };
-    });
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Bearer", policy =>
-    {
-        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
-        policy.RequireAuthenticatedUser();
-    });
-});
+builder.Services.AddAuthentication("localhost", "localhost", "your-secret-key-that-must-be-at-least-16-characters-long");    
+builder.Services.AddAuthorization("Bearer");
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseSwagger();
+app.UseSwaggerUI();
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseExceptionHandler("/error-development");
 }
+else
+{
+    app.UseExceptionHandler("/error");
+}
+
+app.UseRequestLocalization("uk");
 
 app.UseHttpsRedirection();
 

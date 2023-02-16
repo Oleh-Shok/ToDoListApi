@@ -4,10 +4,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using ToDoListApi.Models;
+using ToDoListApi.Models.Exceptions;
 
 namespace ToDoListApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/log-in")]
     [ApiController]
     public class ExternalAuthenticationController : ControllerBase
     {          
@@ -39,7 +40,8 @@ namespace ToDoListApi.Controllers
             }
             else
             {
-                return BadRequest("Invalid username or password");
+                throw new UnauthorizedException("You did not authorize. Please authorize!");
+
             }
         }
     }
