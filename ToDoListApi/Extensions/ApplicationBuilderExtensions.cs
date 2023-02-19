@@ -18,7 +18,7 @@ public static class ApplicationBuilderExtensions
              options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
              {
                  In = ParameterLocation.Header,
-                 Description = "Please enter a valid token",
+                 Description = "Please enter a valid token.",
                  Name = "Authorization",
                  Type = SecuritySchemeType.Http,
                  BearerFormat = "JWT",
@@ -73,7 +73,7 @@ public static class ApplicationBuilderExtensions
 
     public static void UseRequestLocalization(this IApplicationBuilder app, string defaultCulture)
     {
-        var supportedCultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
+        var supportedCultures = new[] { new CultureInfo("en-US"), new CultureInfo("uk-UA") };
 
         app.UseRequestLocalization(new RequestLocalizationOptions
         {

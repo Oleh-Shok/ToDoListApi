@@ -3,18 +3,20 @@ using ToDoListApi.Services;
 using ToDoListApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using ToDoListApi.Models.Exceptions;
+using Microsoft.Extensions.Localization;
 
 namespace ToDoListApi.Controllers;
 
 [ApiController]
 [Route("api/toDoList")]
 public class TodoListController : ControllerBase
-{
-    private readonly ITodoItemService _todoItemService;    
-
-    public TodoListController(ITodoItemService todoItemService)
+{    
+    private readonly ITodoItemService _todoItemService;
+    private readonly IStringLocalizer _resourceLocalizer;
+    public TodoListController(ITodoItemService todoItemService, IStringLocalizer resourceLocalizer)
     {
         _todoItemService = todoItemService;
+        _resourceLocalizer = resourceLocalizer;
     }
 
     [Authorize]
@@ -23,12 +25,12 @@ public class TodoListController : ControllerBase
     {
         if (_todoItemService.Exist(newTodoItem.TaskId))
         {
-            throw new ValidationException($"Task with id {newTodoItem.TaskId} already exists");
+            throw new ValidationException(_resourceLocalizer["ExistsTask", newTodoItem]);
         }
         _todoItemService.AddTodoItem(newTodoItem);
         var successMessages = new List<string>
         {
-            "Task added successfully"
+            _resourceLocalizer["AddTask", new List<string>()]
         };
         return Ok(successMessages);
     }
@@ -39,12 +41,12 @@ public class TodoListController : ControllerBase
     {
         if (!_todoItemService.Exist(taskId))
         {
-            throw new NotFoundException($"Task with id {taskId} not found");
+            throw new NotFoundException(_resourceLocalizer["NotFoundTask", taskId]);
         }
         _todoItemService.RemoveTodoItem(taskId);
         var deleteMessages = new List<string>
         {
-            "Task deleted successfully"
+            _resourceLocalizer["DeleteTask", new List<string>()]
         };
         return Ok(deleteMessages);
         
@@ -57,7 +59,7 @@ public class TodoListController : ControllerBase
         var tasks = _todoItemService.GetTodoItem();
         if (tasks.Count == 0)
         {
-            throw new NotFoundException("To Do list is empty now. Please add task.");
+            throw new NotFoundException(_resourceLocalizer["EmptyTodoList", tasks]);
         }
         return tasks;
     }
@@ -68,13 +70,13 @@ public class TodoListController : ControllerBase
     {
         if (!_todoItemService.Exist(taskId))
         {
-            throw new NotFoundException($"Task with id {taskId} not found");
+            throw new NotFoundException(_resourceLocalizer["NotFoundTask", taskId]);
         }
 
         _todoItemService.UpdateCase(taskId, updatedTask);
         var updateMessages = new List<string>
         {
-            "Task updated successfully"
+            _resourceLocalizer["UpdateTask", new List<string>()]
         };
         return Ok(updateMessages);
     }

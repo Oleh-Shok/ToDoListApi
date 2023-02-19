@@ -10,7 +10,7 @@ public interface ITodoItemService
     public void RemoveTodoItem(int id);
     public List<TodoItem> GetTodoItem();
     bool Exist(int id);
-    void UpdateCase(int id, TodoItem newCase);
+    void UpdateCase(int id, TodoItem newCase);    
 }
 
 public class TodoItemService : ITodoItemService

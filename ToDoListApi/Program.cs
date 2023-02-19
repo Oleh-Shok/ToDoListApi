@@ -1,6 +1,10 @@
 ﻿using ToDoListApi.Services;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using ToDoListApi.Extensions;
+using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +18,9 @@ builder.Services.AddProblemDetails();
 builder.Services.AddSingleton<ITodoItemService, TodoItemService>();
 builder.Services.AddAuthentication("localhost", "localhost", "your-secret-key-that-must-be-at-least-16-characters-long");    
 builder.Services.AddAuthorization("Bearer");
+builder.Services.AddLocalization();
+builder.Services.AddScoped<IStringLocalizer, StringLocalizerService>();
+
 
 var app = builder.Build();
 
@@ -29,11 +36,11 @@ else
     app.UseExceptionHandler("/error");
 }
 
-app.UseRequestLocalization("uk");
-
 app.UseHttpsRedirection();
 
 app.MapControllers();
+
+app.UseRequestLocalization("uk-UA");
 
 app.Run();
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -11,7 +12,13 @@ namespace ToDoListApi.Controllers
     [Route("api/log-in")]
     [ApiController]
     public class ExternalAuthenticationController : ControllerBase
-    {          
+    {
+        private readonly IStringLocalizer _resourceLocalizer;
+        public ExternalAuthenticationController(IStringLocalizer resourceLocalizer)
+        {            
+            _resourceLocalizer = resourceLocalizer;
+        }
+
         [HttpPost]
         public IActionResult Login(LoginModel loginModel)
         {
@@ -40,7 +47,7 @@ namespace ToDoListApi.Controllers
             }
             else
             {
-                throw new UnauthorizedException("You did not authorize. Please authorize!");
+                throw new UnauthorizedException(_resourceLocalizer["Unauthorized", loginModel]);
 
             }
         }
