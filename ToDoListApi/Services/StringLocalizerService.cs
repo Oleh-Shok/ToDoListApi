@@ -10,34 +10,34 @@ namespace ToDoListApi.Services
         public StringLocalizerService()
         {            
             _localizedStrings = new Dictionary<string, Dictionary<string, string>>
-        {
             {
-                "en-US",
-                new Dictionary<string, string>
                 {
-                    { "ExistsTask", "Task with same id already exists." },
-                    { "NotFoundTask", "Task with same id not found." },
-                    { "AddTask", "Task added successfully." },
-                    { "DeleteTask", "Task deleted successfully." },
-                    { "EmptyTodoList", "To Do list is empty now. Please add task." },
-                    { "UpdateTask", "Task updated successfully." },
-                    { "Unauthorized", "You did not authorize. Please authorize!" }
-                }
-            },
-            {
-                "uk-UA",
-                new Dictionary<string, string>
+                    "en-US",
+                    new Dictionary<string, string>
+                    {
+                        { "ExistsTask", "Task with same id already exists." },
+                        { "NotFoundTask", "Task with same id not found." },
+                        { "AddTask", "Task added successfully." },
+                        { "DeleteTask", "Task deleted successfully." },
+                        { "EmptyTodoList", "To Do list is empty now. Please add task." },
+                        { "UpdateTask", "Task updated successfully." },
+                        { "Unauthorized", "You did not authorize. Please authorize!" }
+                    }
+                },
                 {
-                    { "ExistsTask", "Завдання з таким номером вже існує." },
-                    { "NotFoundTask", "Завдання з таким номером не знайдено." },
-                    { "AddTask", "Завдання успішно додано." },
-                    { "DeleteTask", "Завдання успішно видалено." },
-                    { "EmptyTodoList", "Список завдань зараз порожній. Будь ласка, додайте завдання." },
-                    { "UpdateTask", "Завдання успішно оновлено." },
-                    { "Unauthorized", "Ви не авторизовані. Будь ласка, авторизуйтесь!" }
+                    "uk-UA",
+                    new Dictionary<string, string>
+                    {
+                        { "ExistsTask", "Завдання з таким номером вже існує." },
+                        { "NotFoundTask", "Завдання з таким номером не знайдено." },
+                        { "AddTask", "Завдання успішно додано." },
+                        { "DeleteTask", "Завдання успішно видалено." },
+                        { "EmptyTodoList", "Список завдань зараз порожній. Будь ласка, додайте завдання." },
+                        { "UpdateTask", "Завдання успішно оновлено." },
+                        { "Unauthorized", "Ви не авторизовані. Будь ласка, авторизуйтесь!" }
+                    }
                 }
-            }
-        };
+            };
         }
 
         public LocalizedString this[string name]
